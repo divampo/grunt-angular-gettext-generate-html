@@ -1,0 +1,47 @@
+{
+    "name": "grunt-angular-gettext-generate-html",
+    "description": "Tasks for compiling angular-gettext strings and generating project structure per language.",
+    "version": "0.0.1",
+    "homepage": "https://github.com/divampo/grunt-angular-gettext-generate-html",
+    "author": {
+        "name": "Dmitry Serpakov",
+        "email": "divampo@gmail.com",
+        "url": "http://divampo.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:divampo/grunt-angular-gettext-generate-html.git"
+    },
+    "bugs": {
+        "url": "https://github.com/divampo/grunt-angular-gettext-generate-html/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/divampo/grunt-angular-gettext-generate-html/blob/master/LICENSE"
+        }
+    ],
+    "main": "Gruntfile.js",
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1"
+    },
+    "peerDependencies": {
+        "grunt": "~0.4.1"
+    },
+    "keywords": [
+        "gruntplugin",
+        "angular",
+        "gettext",
+        "generate",
+        "l10n",
+        "i18n"
+    ],
+    "dependencies": {
+        "cheerio": "~0.18.0",
+        "lodash": "~2.4.1",
+        "pofile": "~0.2.8"
+    }
+}
