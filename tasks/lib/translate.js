@@ -158,7 +158,7 @@ exports.init = function(grunt) {
                 return;
             }
         });
-        return string;
+        return string.msgstr[0] != '' ? string : null;
     };
 
     exports.Translator = Translator;
