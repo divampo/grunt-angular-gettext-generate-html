@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         translator.iterateLocales(function(locale) {
             // Loop through the file structure
             for (var dest in output) {
-                grunt.file.write(dest.replace("{Language}", locale.Language), translator.parse(output[dest], locale.Language));
+                grunt.file.write(dest.replace("{Language}", locale.Language).replace('{ProjectIdVersion}', locale['Project-Id-Version']), translator.parse(output[dest], locale.Language));
             }
         });
     });
