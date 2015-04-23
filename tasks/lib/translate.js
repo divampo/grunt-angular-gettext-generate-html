@@ -131,7 +131,7 @@ exports.init = function(grunt) {
         var prevPos = 0;
         while ((matches = me.scriptTokenRegex.exec(input)) !== null) {
             var str = matches[0].replace(/\\\'/g, '\'');
-            var label = "script_safety_" + me.scriptTokenRegex.lastIndex;
+            var label = "|script_safety_" + me.scriptTokenRegex.lastIndex + "|"; // this label needs trailing symbols to avoid of label collisions
             out += input.substr(prevPos, me.scriptTokenRegex.lastIndex - matches[0].length - prevPos) + label;
 
             me.scripts[label] = str;
