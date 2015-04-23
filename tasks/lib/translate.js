@@ -14,7 +14,7 @@ exports.init = function(grunt) {
             startDelim: "{{",
             endDelim: "}}",
             startScript: "<%",
-            endScript: "%>",
+            endScript: "%>"
         }, options);
 
         // initializing locales
@@ -78,7 +78,6 @@ exports.init = function(grunt) {
             };
 
             var string;
-            var translation = "";
 
             // translating `translate` tag
             if (node.is('translate')) {
@@ -88,8 +87,8 @@ exports.init = function(grunt) {
 
             // translating `translate` attribute
             if (hasAttr('translate') && !hasAttr('translate-plural')) {
-                removeAttr('translate')
-                removeAttr('translate-comment')
+                removeAttr('translate');
+                removeAttr('translate-comment');
                 removeAttr('translate-context');
 
                 string = me.findString(str, lang);
@@ -131,7 +130,7 @@ exports.init = function(grunt) {
         var prevPos = 0;
         while ((matches = me.scriptTokenRegex.exec(input)) !== null) {
             var str = matches[0].replace(/\\\'/g, '\'');
-            var label = "script_safety_" + me.scriptTokenRegex.lastIndex;
+            var label = "|script_safety_" + me.scriptTokenRegex.lastIndex + "|"; // this label needs trailing symbols to avoid of label collisions
             out += input.substr(prevPos, me.scriptTokenRegex.lastIndex - matches[0].length - prevPos) + label;
 
             me.scripts[label] = str;
