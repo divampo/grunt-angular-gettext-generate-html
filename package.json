@@ -1,7 +1,7 @@
 {
     "name": "grunt-angular-gettext-generate-html",
     "description": "Tasks for compiling angular-gettext strings and generating project structure per language.",
-    "version": "v1.0.2",
+    "version": "v1.0.3",
     "homepage": "https://github.com/divampo/grunt-angular-gettext-generate-html",
     "author": {
         "name": "Dmitry Serpakov",
