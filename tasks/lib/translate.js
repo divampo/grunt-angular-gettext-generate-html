@@ -19,15 +19,15 @@ exports.init = function(grunt) {
 
         // initializing locales
         me.locales = {};
-        po_inputs.forEach(function(input) {
-            var catalog = po.parse(input);
+        for (var lang in po_inputs) {
+            var catalog = po.parse(po_inputs[lang]);
 
             if (!catalog.headers.Language) {
-                throw new Error('No Language header found!');
+                console.log('WARNING: No Language header found for %s!', lang);
             }
 
-            me.locales[catalog.headers.Language] = catalog;
-        });
+            me.locales[catalog.headers.Language || lang] = catalog;
+        }
 
         var escapeRegex = /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g;
         var start;
@@ -50,7 +50,7 @@ exports.init = function(grunt) {
 
     Translator.prototype.iterateLocales = function (callback) {
         for (var lang in this.locales) {
-            callback.call(this, this.locales[lang].headers);
+            callback.call(this, this.locales[lang].headers, lang);
         }
     };
 
