@@ -79,6 +79,12 @@ exports.init = function(grunt) {
 
             var string;
 
+            console.log(str);
+            // seen HTML template hacks
+            if(node.is('script') && attr.type && attr.type !== 'text/javascript') {
+                console.log(str);
+            }
+
             // translating `translate` tag
             if (node.is('translate')) {
                 string = me.findString(str, lang);
