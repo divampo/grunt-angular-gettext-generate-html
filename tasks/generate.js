@@ -50,7 +50,7 @@ module.exports = function (grunt) {
                     dest
                         .replace("{Language}", dest_lang)
                         .replace('{ProjectIdVersion}', locale['Project-Id-Version']),
-                    translator.parse(output[dest], lang)
+                    translator.parse(output[dest].text, lang)
                 );
             }
         });
