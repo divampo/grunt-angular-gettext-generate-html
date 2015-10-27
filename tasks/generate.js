@@ -5,6 +5,7 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('gt_generate_html', 'Generate translated files from given path using .po files', function () {
         var options = this.options();
+        var lang_map = options.langCode;
 
         // Scanning a file structure
         var output = {};
@@ -33,13 +34,23 @@ module.exports = function (grunt) {
         var translator = new Translator(l10n, options);
 
         translator.iterateLocales(function(locale, lang) {
+            lang = locale.Language || lang;
+
+            var dest_lang;
+            // Language code mapping
+            if (typeof lang_map === 'function') {
+                dest_lang = lang_map(lang);
+            } else if (typeof lang_map === 'object') {
+                dest_lang = lang_map[lang] || lang;
+            }
+
             // Loop through the file structure
             for (var dest in output) {
                 grunt.file.write(
                     dest
-                        .replace("{Language}", locale.Language || lang)
+                        .replace("{Language}", dest_lang)
                         .replace('{ProjectIdVersion}', locale['Project-Id-Version']),
-                    translator.parse(output[dest], locale.Language || lang)
+                    translator.parse(output[dest].text, lang)
                 );
             }
         });

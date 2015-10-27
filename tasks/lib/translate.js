@@ -42,7 +42,6 @@ exports.init = function(grunt) {
         me.stringTokenRegex = new RegExp(start + '\\s*(\'|"|&quot;|&#39;)(.*?)\\1\\s*\\|\\s*translate\\s*' + end, 'g');
 
         // initializing script safety regexp
-        me.scripts = {};
         start = me.options.startScript.replace(escapeRegex, '\\$&');
         end = me.options.endScript.replace(escapeRegex, '\\$&');
         me.scriptTokenRegex = new RegExp(start + '[\\s\\S]*?' + end, 'g');
@@ -56,8 +55,37 @@ exports.init = function(grunt) {
 
     Translator.prototype.parse = function (input, lang) {
         var me = this;
+        // preserved scripts in this scope
+        var scripts = {};
 
-        var translated_text = me.options.preserveScripts === true ? me.preserveScriptsOn(input.text) : input.text;
+        function preserveScriptsOn(input) {
+            var me = this;
+            var matches;
+            var out = "";
+            var prevPos = 0;
+            while ((matches = me.scriptTokenRegex.exec(input)) !== null) {
+                var str = matches[0].replace(/\\\'/g, '\'');
+                var label = "|script_safety_" + me.scriptTokenRegex.lastIndex + "|"; // this label needs trailing symbols to avoid of label collisions
+                out += input.substr(prevPos, me.scriptTokenRegex.lastIndex - matches[0].length - prevPos) + label;
+
+                scripts[label] = str;
+                prevPos = me.scriptTokenRegex.lastIndex;
+            }
+            out += input.substr(prevPos);
+
+            return out;
+        }
+
+        function preserveScriptsOff(input) {
+            var plh;
+            for (plh in scripts) {
+                input = input.replace(plh, scripts[plh]);
+            }
+            return input;
+        }
+
+
+        var translated_text = me.options.preserveScripts === true ? preserveScriptsOn(input) : input;
         var $ = cheerio.load(translated_text, _.extend({}, me.options, {
             decodeEntities: false,
             withStartIndices: true
@@ -79,6 +107,11 @@ exports.init = function(grunt) {
 
             var string;
 
+            // Parse <script type="x-template"> aka. HTML inline template
+            if(node.is('script') && attr.type && /\btemplate\b/.test(attr.type)) {
+                node.html(me.parse(str, lang));
+            }
+
             // translating `translate` tag
             if (node.is('translate')) {
                 string = me.findString(str, lang);
@@ -99,7 +132,7 @@ exports.init = function(grunt) {
         translated_text = $.html();
 
         if (me.options.preserveScripts === true) {
-            translated_text = me.preserveScriptsOff(translated_text);
+            translated_text = preserveScriptsOff(translated_text);
         }
 
         // replacing inline translations
@@ -121,32 +154,6 @@ exports.init = function(grunt) {
         html += translated_text.substr(prevPos);
 
         return html;
-    };
-
-    Translator.prototype.preserveScriptsOn = function (input) {
-        var me = this;
-        var matches;
-        var out = "";
-        var prevPos = 0;
-        while ((matches = me.scriptTokenRegex.exec(input)) !== null) {
-            var str = matches[0].replace(/\\\'/g, '\'');
-            var label = "|script_safety_" + me.scriptTokenRegex.lastIndex + "|"; // this label needs trailing symbols to avoid of label collisions
-            out += input.substr(prevPos, me.scriptTokenRegex.lastIndex - matches[0].length - prevPos) + label;
-
-            me.scripts[label] = str;
-            prevPos = me.scriptTokenRegex.lastIndex;
-        }
-        out += input.substr(prevPos);
-
-        return out;
-    };
-
-    Translator.prototype.preserveScriptsOff = function (input) {
-        var plh;
-        for (plh in this.scripts) {
-            input = input.replace(plh, this.scripts[plh]);
-        }
-        return input;
     };
 
     Translator.prototype.findString = function (str, lang) {

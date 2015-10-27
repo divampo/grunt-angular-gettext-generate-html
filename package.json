@@ -1,24 +1,30 @@
 {
-    "name": "grunt-angular-gettext-generate-html",
-    "description": "Tasks for compiling angular-gettext strings and generating project structure per language.",
+    "name": "grunt-gettext-gen",
+    "description": "Tasks for compiling gettext PO strings into source files.",
     "version": "v1.0.3",
-    "homepage": "https://github.com/divampo/grunt-angular-gettext-generate-html",
+    "homepage": "https://github.com/englishtown/grunt-gettext-generate-html",
     "author": {
         "name": "Dmitry Serpakov",
         "email": "divampo@gmail.com",
         "url": "http://divampo.com"
     },
+    "contributors": [
+        {
+            "name": "Garry Yao",
+            "email": "yaojun85@gmail.com"
+        }
+    ],
     "repository": {
         "type": "git",
-        "url": "git@github.com:divampo/grunt-angular-gettext-generate-html.git"
+        "url": "git@github.com:englishtown/grunt-gettext-generate-html.git"
     },
     "bugs": {
-        "url": "https://github.com/divampo/grunt-angular-gettext-generate-html/issues"
+        "url": "https://github.com/englishtown/grunt-gettext-generate-html/issues"
     },
     "licenses": [
         {
             "type": "MIT",
-            "url": "https://github.com/divampo/grunt-angular-gettext-generate-html/blob/master/LICENSE"
+            "url": "https://github.com/englishtown/grunt-gettext-generate-html/blob/master/LICENSE"
         }
     ],
     "main": "Gruntfile.js",
@@ -33,7 +39,6 @@
     },
     "keywords": [
         "gruntplugin",
-        "angular",
         "gettext",
         "generate",
         "l10n",
